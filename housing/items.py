@@ -13,8 +13,14 @@ class House(scrapy.Item):
     address = scrapy.Field()
     #房型
     type = scrapy.Field()
+    #大小
+    size = scrapy.Field()
+    #户型
+    model = scrapy.Field()
     #总价
     price = scrapy.Field()
     #单价
-    unitPrice = scrapy.Field()
+    unitprice = scrapy.Field()
+    #链接
+    url = scrapy.Field()
     pass
