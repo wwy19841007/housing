@@ -47,8 +47,8 @@ class AnjukeSpider(scrapy.Spider):
             f.write(response.body)
 
         curr = response.xpath('//i[@class="curr"]/text()').extract_first()
-        next_page_url = 'https://xm.anjuke.com/sale/p' + str((int(curr) + 1)) + '-rd1/?kw=%E8%8E%B2%E8%8A%B1#filtersort'
-        if int(curr) < 50:
+        if curr is not None and int(curr) < 50:
+            next_page_url = 'https://xm.anjuke.com/sale/p' + str((int(curr) + 1)) + '-rd1/?kw=%E8%8E%B2%E8%8A%B1#filtersort'
             yield scrapy.Request(response.urljoin(next_page_url))
         else:
             filename = "result.txt"
