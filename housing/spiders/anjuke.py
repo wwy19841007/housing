@@ -53,5 +53,6 @@ class AnjukeSpider(scrapy.Spider):
             yield scrapy.Request(response.urljoin(next_page_url))
         else:
             filename = os.path.realpath("") + "\\tmp\\result.txt"
+            print(filename)
             with io.open(filename, 'wb') as f:
                 f.write(self.result)
