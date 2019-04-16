@@ -4,6 +4,7 @@ from housing.items import House
 import sys
 import os
 import io
+import urllib
 
 reload(sys)
 sys.setdefaultencoding( "utf-8" )
@@ -11,9 +12,11 @@ sys.setdefaultencoding( "utf-8" )
 class AnjukeSpider(scrapy.Spider):
     name = 'anjuke'
     allowed_domains = ['anjuke.com']
-    start_urls = ['https://xm.anjuke.com/sale/p1-rd1/?kw=%E8%8E%B2%E8%8A%B1#filtersort'
-                  ]
     result = "type,address,model,size,price,unitprice,url\r\n"
+
+    def __init__(self, place="莲花", *args, **kwargs):
+        super(AnjukeSpider, self).__init__(*args, **kwargs)
+        self.start_urls = ['https://xm.anjuke.com/sale/p1-rd1/?kw=' + urllib.quote(place) + '#filtersort']
 
     def parse(self, response):
         for item in response.xpath('//li[@class="list-item"]'):
