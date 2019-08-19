@@ -12,11 +12,13 @@ sys.setdefaultencoding( "utf-8" )
 class AnjukeSpider(scrapy.Spider):
     name = 'anjuke'
     allowed_domains = ['anjuke.com']
+    keyword = ""
     result = "type,address,model,size,price,unitprice,url\r\n"
 
     def __init__(self, place="莲花", *args, **kwargs):
         super(AnjukeSpider, self).__init__(*args, **kwargs)
-        self.start_urls = ['https://xm.anjuke.com/sale/p1-rd1/?kw=' + urllib.quote(place) + '#filtersort']
+        self.keyword = place
+        self.start_urls = ['https://xm.anjuke.com/sale/p1-rd1/?kw=' + urllib.quote(self.keyword) + '#filtersort']
 
     def parse(self, response):
         for item in response.xpath('//li[@class="list-item"]'):
@@ -52,7 +54,7 @@ class AnjukeSpider(scrapy.Spider):
 
         curr = response.xpath('//i[@class="curr"]/text()').extract_first()
         if curr is not None and int(curr) < 50:
-            next_page_url = 'https://xm.anjuke.com/sale/p' + str((int(curr) + 1)) + '-rd1/?kw=%E8%8E%B2%E8%8A%B1#filtersort'
+            next_page_url = 'https://xm.anjuke.com/sale/p' + str((int(curr) + 1)) + '-rd1/?kw=' + urllib.quote(self.keyword) + '#filtersort'
             yield scrapy.Request(response.urljoin(next_page_url))
         else:
             filename = os.path.realpath("") + "\\tmp\\result.txt"
